@@ -24,6 +24,7 @@ SSID=$(jq --raw-output ".ssid" $CONFIG_PATH)
 WPA_PASSPHRASE=$(jq --raw-output ".wpa_passphrase" $CONFIG_PATH)
 CHANNEL=$(jq --raw-output ".channel" $CONFIG_PATH)
 ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
+HW_MODE=$(jq --raw-output ".hw_mode" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
@@ -153,6 +154,10 @@ ifconfig $INTERFACE $ADDRESS netmask $NETMASK broadcast $BROADCAST
 # Add interface to hostapd.conf
 logger "Add to hostapd.conf: interface=$INTERFACE" 1
 echo "interface=$INTERFACE"$'\n' >> /hostapd.conf
+
+# Add hw_mode to hostapd.conf
+logger "Add to hostapd.conf: hw_mode=$HW_MODE" 1
+echo "hw_mode=$HW_MODE"$'\n' >> /hostapd.conf
 
 # Append override options to hostapd.conf
 if [ ${#HOSTAPD_CONFIG_OVERRIDE} -ge 1 ]; then
